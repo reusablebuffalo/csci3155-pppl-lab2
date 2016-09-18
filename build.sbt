@@ -2,7 +2,7 @@ name := "pppl-lab2"
 
 organization := "edu.colorado.cs"
 
-version := "3.1.2"
+version := "3.2.0"
 
 scalaVersion := "2.11.8"
 
