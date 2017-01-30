@@ -42,17 +42,21 @@ trait JsyApplication {
         (false, s"Expected output file ${ans} does not exist.")
       }
       else {
-        val outstream = new ByteArrayOutputStream()
-        Console.withOut(outstream)(processFile(file))
+        try {
+          val outstream = new ByteArrayOutputStream()
+          Console.withOut(outstream)(processFile(file))
 
-        val encoding = java.nio.charset.StandardCharsets.UTF_8
-        val ansstring = new String(Files.readAllBytes(ans.toPath), encoding)
+          val encoding = java.nio.charset.StandardCharsets.UTF_8
+          val ansstring = new String(Files.readAllBytes(ans.toPath), encoding)
 
-        outstream.flush()
-        val outstring = new String(outstream.toString(encoding.toString))
-        outstream.close()
+          outstream.flush()
+          val outstring = new String(outstream.toString(encoding.toString))
+          outstream.close()
 
-        (ansstring == outstring, s"Computed output does not match expected output.\nComputed:\n${outstring}\nExpected:\n${ansstring}")
+          (ansstring == outstring, s"Computed output does not match expected output.\nComputed:\n${outstring}\nExpected:\n${ansstring}")
+        } catch {
+            case e: NotImplementedError => (false, s"Unexpected exception: ${e.getMessage}")
+          }
       }
     })
   }
