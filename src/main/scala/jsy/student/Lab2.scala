@@ -8,9 +8,9 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
 
   /*
    * CSCI 3155: Lab 2
-   * <Your Name>
+   * Ian Smith
    * 
-   * Partner: <Your Partner's Name>
+   * Partner: Vy
    * Collaborators: <Any Collaborators>
    */
 
@@ -61,8 +61,10 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
   def toNumber(v: Expr): Double = {
     require(isValue(v))
     (v: @unchecked) match {
-      case N(n) => n
-      case _ => ???
+      case N(n) => if(n.isNaN) Double.NaN else n
+      case B(b) => if(b) 1 else 0
+      case S(s) => toNumber(N(s.toDouble))
+      case Undefined => Double.NaN
     }
   }
 
@@ -70,7 +72,10 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     require(isValue(v))
     (v: @unchecked) match {
       case B(b) => b
-      case _ => ???
+      case N(n) => if(n == 0) false else true
+      case S(_) => true
+      case Undefined => false
+
     }
   }
 
@@ -86,10 +91,12 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
   def eval(env: Env, e: Expr): Expr = {
     e match {
       /* Base Cases */
+      case N(n) => N(n)
+      case S(s) => S(s)
 
       /* Inductive Cases */
       case Print(e1) => println(pretty(eval(env, e1))); Undefined
-
+      case Binary(Plus, N(n1), N(n2)) => N(n1+n2)
       case _ => ???
     }
   }
