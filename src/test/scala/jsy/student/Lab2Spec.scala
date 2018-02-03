@@ -241,6 +241,21 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(e3 === B(false))
     assert(e4 === B(true))
   }
+
+  // CUSTOM TEST CASES
+  "Eq" should "return false for NaN == undefined" in {
+    val e1 = N(Double.NaN)
+    val e2 = Undefined
+    assert(B(false) === eval(Binary(Eq, e1, e2)))
+  }
+
+  "Ne" should "return true for NaN != NaN and for undefined != NaN" in {
+    val e1 = N(Double.NaN)
+    val e2 = Undefined
+    assert(B(true) === eval(Binary(Ne, e1, e1)))
+    assert(B(true) === eval(Binary(Ne, e1, e2)))
+  }
+
 }
 
 // An adapter class to pass in your Lab2 object.
