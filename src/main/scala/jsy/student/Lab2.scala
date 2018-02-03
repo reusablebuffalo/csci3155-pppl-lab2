@@ -103,17 +103,18 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case Print(e1) => println(pretty(eval(env, e1))); Undefined
 
       /* Binary */
+        // Arithmetic Ops
       case Binary(Plus, N(n1), N(n2)) => N(n1+n2)
+      case Binary(Plus, S(s1), S(s2)) => S(s1+s2)
+      case Binary(Plus, Var(x), N(n)) => eval(env, Binary(Plus, eval(env, Var(x)), eval(env, N(n))))
       case Binary(Minus, N(n1), N(n2)) => N(n1-n2)
       case Binary(Div, N(n1), N(n2)) => N(n1/n2)
       case Binary(Times, N(n1), N(n2)) => N(n1*n2)
 
-      //case Binary(And, B(b1), B(b2)) => B(b1 && b2)
+        // Binary Logic Ops
       // return first to eval to false or if both are true return the first expr
       case Binary(And, e1, e2) => if(!toBoolean(e1)) e1 else if (toBoolean(e1) && toBoolean(e2)) e1 else e2
 
-
-      //case Binary(Or, B(b1), B(b2)) => B(b1 || b2)
       // return the first to eval to true, if both false return the 2nd expr
       case Binary(Or, e1, e2) => if(toBoolean(e1)) e1 else e2
 

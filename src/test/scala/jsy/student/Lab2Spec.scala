@@ -256,6 +256,8 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(B(true) === eval(Binary(Ne, e1, e2)))
   }
 
+  ""
+
 }
 
 // An adapter class to pass in your Lab2 object.
