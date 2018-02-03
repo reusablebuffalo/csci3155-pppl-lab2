@@ -256,7 +256,12 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(B(true) === eval(Binary(Ne, e1, e2)))
   }
 
-  ""
+  "Comparisons" should "be able to compare strings" in {
+    val e1 = S("ab")
+    val e2 = S("abc")
+    assert(B(true) === eval(Binary(Lt, e1, e2)))
+    assert(B(false) === eval(Binary(Gt, e1, e2)))
+  }
 
 }
 
