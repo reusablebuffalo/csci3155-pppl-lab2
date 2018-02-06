@@ -143,6 +143,10 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       /* Sequence Op */
       case Binary(Seq, e1, e2) => eval(env, e1); eval(env, e2) // evaluate e1, return eval(env,e2)
 
+      /* Ternary Op*/
+        // If
+      case If(e1, e2, e3) => if(toBoolean(eval(env,e1))) eval(env, e2) else eval(env, e3) // if e1 evals to true eval e2 else eval e3
+
       /* Unary */
       case Unary(Neg, e1) => N(-toNumber(e1))
       case Unary(Not, e1) => B(!toBoolean(e1))
