@@ -105,10 +105,18 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
 
       /* Binary */
       /* Binary Arithmetic */
-      case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
-      case Binary(Plus, S(s1), e2 ) => if(isValue(e2)) S(s1 + toStr(e2)) else eval(env, Binary(Plus, S(s1), eval(env, e2)))
-      case Binary(Plus, e1, S(s2) ) => if(isValue(e1)) S(toStr(e1) + s2) else eval(env, Binary(Plus, eval(env, e1), S(s2)))
-      case Binary(Plus, e1, e2) => N(toNumber(eval(env, e1))+toNumber(eval(env, e2))) // eval expression then convert to number
+
+      case Binary(Plus, e1, e2) => if(!isValue(e1)) eval(env, Binary(Plus, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(Plus, e1, eval(env, e2))) else (e1,e2) match {
+        case (S(s1),S(s2)) => S(s1+s2)
+        case (S(s1),expr2) => S(s1 + toStr(expr2))
+        case (expr1, S(s2)) => S(toStr(expr1) + s2)
+        case (expr1, expr2) => N(toNumber(expr1) + toNumber(expr2))
+    }
+
+      //case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
+      //case Binary(Plus, S(s1), e2 ) => if(isValue(e2)) S(s1 + toStr(e2)) else eval(env, Binary(Plus, S(s1), eval(env, e2)))
+      //case Binary(Plus, e1, S(s2) ) => if(isValue(e1)) S(toStr(e1) + s2) else eval(env, Binary(Plus, eval(env, e1), S(s2)))
+      //case Binary(Plus, e1, e2) => N(toNumber(eval(env, e1))+toNumber(eval(env, e2))) // eval expression then convert to number
 
       case Binary(Minus, e1, e2) => N(toNumber(eval(env, e1))-toNumber(eval(env, e2)))
       case Binary(Div, e1, e2) => N(toNumber(eval(env, e1))/toNumber(eval(env, e2)))
