@@ -275,6 +275,9 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(S("ab3.2") === eval(Binary(Plus, e1, e5)))
   }
 
+  "parenthesis and string addition" should "convert to string twice" in {
+    assert(S("asdfas13") === eval(Binary(Plus,Binary(Plus,S("asdfas"),N(1.0)),N(3.0))))
+  }
 }
 
 // An adapter class to pass in your Lab2 object.

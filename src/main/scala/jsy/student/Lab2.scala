@@ -105,9 +105,9 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
 
       /* Binary */
       /* Binary Arithmetic */
-      //case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
-      case Binary(Plus, S(s1), e2 ) => S(s1 + toStr(eval(env, e2 )))
-      case Binary(Plus, e1, S(s2) ) => S(toStr(eval(env, e1 )) + S(s2))
+      case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
+      case Binary(Plus, S(s1), e2 ) => if(isValue(e2)) S(s1 + toStr(e2)) else eval(env, Binary(Plus, S(s1), eval(env, e2)))
+      case Binary(Plus, e1, S(s2) ) => if(isValue(e1)) S(toStr(e1) + s2) else eval(env, Binary(Plus, eval(env, e1), S(s2)))
       case Binary(Plus, e1, e2) => N(toNumber(eval(env, e1))+toNumber(eval(env, e2))) // eval expression then convert to number
 
       case Binary(Minus, e1, e2) => N(toNumber(eval(env, e1))-toNumber(eval(env, e2)))
