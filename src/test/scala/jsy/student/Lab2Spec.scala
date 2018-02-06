@@ -275,8 +275,12 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(S("ab3.2") === eval(Binary(Plus, e1, e5)))
   }
 
-  "parenthesis and string addition" should "convert to string twice" in {
+  "nested string addition" should "return a string" in {
     assert(S("asdfas13") === eval(Binary(Plus,Binary(Plus,S("asdfas"),N(1.0)),N(3.0))))
+  }
+
+  "undefined" should "equal undefined" in {
+    assert(B(true) === eval(Binary(Eq, Undefined, Undefined)))
   }
 }
 

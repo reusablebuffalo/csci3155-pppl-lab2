@@ -131,9 +131,11 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case Binary(Or, e1, e2) => if(toBoolean(eval(env,e1))) e1 else e2
 
       case Binary(Eq, S(s1), S(s2)) => B(s1 == s2)
+      case Binary(Eq, Undefined, Undefined) => B(true)
       case Binary(Eq, e1, e2) => B(if(toNumber(eval(env,e1)) == toNumber(eval(env,e2))) true else false)
 
       case Binary(Ne, S(s1), S(s2)) => B(s1 != s2)
+      case Binary(Ne, Undefined, Undefined) => B(false)
       case Binary(Ne, e1, e2) => B(if(toNumber(eval(env, e1)) != toNumber(eval(env, e2))) true else false) // return the opposite of Eq
 
       case Binary(Lt, S(s1), S(s2)) => B(s1 < s2)
