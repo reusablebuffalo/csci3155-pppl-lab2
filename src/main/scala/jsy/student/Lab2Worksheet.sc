@@ -24,3 +24,8 @@ val negFourAST = parse("-4")
 // which calls the parser and then delegates to your eval function.
 //eval("undefined + 1")
 
+//parse("NaN || false || 123 ")
+//eval("NaN || false || 123 ")
+eval("!!0")
+
+parse("false - 3 -4")

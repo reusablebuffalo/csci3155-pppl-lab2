@@ -92,84 +92,82 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     }
   }
 
-  def eval(env: Env, e: Expr): Expr = {
-    e match {
-      /* Base Cases */
-      case N(n) => N(n)
-      case S(s) => S(s)
-      case B(b) => B(b)
-      case Undefined => Undefined
+  def eval(env: Env, e: Expr): Expr = e match {
+    /* Base Cases */
+    case N(n) => N(n)
+    case S(s) => S(s)
+    case B(b) => B(b)
+    case Undefined => Undefined
 
-      /* Inductive Cases */
-      case Print(e1) => println(pretty(eval(env, e1))); Undefined
+    /* Inductive Cases */
+    case Print(e1) => println(pretty(eval(env, e1))); Undefined
 
-      /* Binary */
-      /* Binary Arithmetic */
+    /* Binary */
+    /* Binary Arithmetic */
 
-      case Binary(Plus, e1, e2) => if(!isValue(e1)) eval(env, Binary(Plus, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(Plus, e1, eval(env, e2))) else (e1,e2) match {
-        case (S(s1),S(s2)) => S(s1+s2)
-        case (S(s1),expr2) => S(s1 + toStr(expr2))
-        case (expr1, S(s2)) => S(toStr(expr1) + s2)
-        case (expr1, expr2) => N(toNumber(expr1) + toNumber(expr2))
+    case Binary(Plus, e1, e2) => if(!isValue(e1)) eval(env, Binary(Plus, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(Plus, e1, eval(env, e2))) else (e1,e2) match {
+      case (S(s1),S(s2)) => S(s1+s2)
+      case (S(s1),expr2) => S(s1 + toStr(expr2))
+      case (expr1, S(s2)) => S(toStr(expr1) + s2)
+      case (expr1, expr2) => N(toNumber(expr1) + toNumber(expr2))
+  }
+
+    //case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
+    //case Binary(Plus, S(s1), e2 ) => if(isValue(e2)) S(s1 + toStr(e2)) else eval(env, Binary(Plus, S(s1), eval(env, e2)))
+    //case Binary(Plus, e1, S(s2) ) => if(isValue(e1)) S(toStr(e1) + s2) else eval(env, Binary(Plus, eval(env, e1), S(s2)))
+    //case Binary(Plus, e1, e2) => N(toNumber(eval(env, e1))+toNumber(eval(env, e2))) // eval expression then convert to number
+
+    case Binary(Minus, e1, e2) => N(toNumber(eval(env, e1))-toNumber(eval(env, e2)))
+    case Binary(Div, e1, e2) => N(toNumber(eval(env, e1))/toNumber(eval(env, e2)))
+    case Binary(Times, e1, e2) => N(toNumber(eval(env, e1))*toNumber(eval(env, e2)))
+
+    /* Binary Comparisons */
+
+    // return first to eval to false or if both are true return the first expr
+    case Binary(And, e1, e2) => if(!isValue(e1)) eval(env, Binary(And, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(And, e1, eval(env, e2))) else {
+        if(!toBoolean(e1)) e1 else e2
     }
+    // return the first to eval to true, if both false return the 2nd expr
+    case Binary(Or, e1, e2) => if(toBoolean(eval(env, e1))) eval(env, e1) else eval(env, e2)
 
-      //case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
-      //case Binary(Plus, S(s1), e2 ) => if(isValue(e2)) S(s1 + toStr(e2)) else eval(env, Binary(Plus, S(s1), eval(env, e2)))
-      //case Binary(Plus, e1, S(s2) ) => if(isValue(e1)) S(toStr(e1) + s2) else eval(env, Binary(Plus, eval(env, e1), S(s2)))
-      //case Binary(Plus, e1, e2) => N(toNumber(eval(env, e1))+toNumber(eval(env, e2))) // eval expression then convert to number
+    case Binary(Eq, S(s1), S(s2)) => B(s1 == s2) // special case
+    case Binary(Eq, Undefined, Undefined) => B(true) // special case
+    case Binary(Eq, e1, e2) => B(if(toNumber(eval(env,e1)) == toNumber(eval(env,e2))) true else false)
 
-      case Binary(Minus, e1, e2) => N(toNumber(eval(env, e1))-toNumber(eval(env, e2)))
-      case Binary(Div, e1, e2) => N(toNumber(eval(env, e1))/toNumber(eval(env, e2)))
-      case Binary(Times, e1, e2) => N(toNumber(eval(env, e1))*toNumber(eval(env, e2)))
+    case Binary(Ne, S(s1), S(s2)) => B(s1 != s2) // special case
+    case Binary(Ne, Undefined, Undefined) => B(false) // special case
+    case Binary(Ne, e1, e2) => B(if(toNumber(eval(env, e1)) != toNumber(eval(env, e2))) true else false) // return the opposite of Eq
 
-      /* Binary Comparisons */
+    case Binary(Lt, S(s1), S(s2)) => B(s1 < s2)
+    case Binary(Lt, e1, e2) => B(if(toNumber(eval(env,e1)) < toNumber(eval(env,e2))) true else false)
 
-      // return first to eval to false or if both are true return the first expr
-      case Binary(And, e1, e2) => if(!isValue(e1)) eval(env, Binary(And, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(And, e1, eval(env, e2))) else {
-          if(!toBoolean(e1)) e1 else e2
-      }
-      // return the first to eval to true, if both false return the 2nd expr
-      case Binary(Or, e1, e2) => if(toBoolean(eval(env,e1))) eval(env,e1) else eval(env,e2)
+    case Binary(Le, S(s1), S(s2)) => B(s1 <= s2)
+    case Binary(Le, e1, e2) => B(if(toNumber(eval(env,e1)) <= toNumber(eval(env,e2))) true else false)
 
-      case Binary(Eq, S(s1), S(s2)) => B(s1 == s2) // special case
-      case Binary(Eq, Undefined, Undefined) => B(true) // special case
-      case Binary(Eq, e1, e2) => B(if(toNumber(eval(env,e1)) == toNumber(eval(env,e2))) true else false)
+    case Binary(Gt, S(s1), S(s2)) => B(s1 > s2)
+    case Binary(Gt, e1, e2) => B(if(toNumber(eval(env,e1)) > toNumber(eval(env,e2))) true else false)
 
-      case Binary(Ne, S(s1), S(s2)) => B(s1 != s2) // special case
-      case Binary(Ne, Undefined, Undefined) => B(false) // special case
-      case Binary(Ne, e1, e2) => B(if(toNumber(eval(env, e1)) != toNumber(eval(env, e2))) true else false) // return the opposite of Eq
+    case Binary(Ge, S(s1), S(s2)) => B(s1 >= s2)
+    case Binary(Ge, e1, e2) => B(if(toNumber(eval(env,e1)) >= toNumber(eval(env,e2))) true else false)
 
-      case Binary(Lt, S(s1), S(s2)) => B(s1 < s2)
-      case Binary(Lt, e1, e2) => B(if(toNumber(eval(env,e1)) < toNumber(eval(env,e2))) true else false)
+    /* Sequence Op */
+    case Binary(Seq, e1, e2) => eval(env, e1); eval(env, e2) // evaluate e1, return eval(env,e2)
 
-      case Binary(Le, S(s1), S(s2)) => B(s1 <= s2)
-      case Binary(Le, e1, e2) => B(if(toNumber(eval(env,e1)) <= toNumber(eval(env,e2))) true else false)
+    /* Ternary Op*/
+      // If
+    case If(e1, e2, e3) => if(toBoolean(eval(env,e1))) eval(env, e2) else eval(env, e3) // if e1 evals to true eval e2 else eval e3
 
-      case Binary(Gt, S(s1), S(s2)) => B(s1 > s2)
-      case Binary(Gt, e1, e2) => B(if(toNumber(eval(env,e1)) > toNumber(eval(env,e2))) true else false)
+    /* Unary */
+    case Unary(Neg, e1) => N(-toNumber(eval(env,e1)))
+    case Unary(Not, e1) => B(!toBoolean(eval(env,e1)))
 
-      case Binary(Ge, S(s1), S(s2)) => B(s1 >= s2)
-      case Binary(Ge, e1, e2) => B(if(toNumber(eval(env,e1)) >= toNumber(eval(env,e2))) true else false)
+    /* Var */
+    case Var(x) => try {lookup(env, x)} catch { case e:java.util.NoSuchElementException => Undefined}// returns looked up variable
 
-      /* Sequence Op */
-      case Binary(Seq, e1, e2) => eval(env, e1); eval(env, e2) // evaluate e1, return eval(env,e2)
+    /* ConstDecl */
+    case ConstDecl(x, e1, e2) => eval(extend(env , x, eval(e1)), e2)
 
-      /* Ternary Op*/
-        // If
-      case If(e1, e2, e3) => if(toBoolean(eval(env,e1))) eval(env, e2) else eval(env, e3) // if e1 evals to true eval e2 else eval e3
-
-      /* Unary */
-      case Unary(Neg, e1) => N(-toNumber(eval(env,e1)))
-      case Unary(Not, e1) => B(!toBoolean(eval(env,e1)))
-
-      /* Var */
-      case Var(x) => lookup(env, x) // returns looked up variable
-
-      /* ConstDecl */
-      case ConstDecl(x, e1, e2) => eval(extend(env , x, eval(e1)), e2)
-
-      case _ => ???
-    }
+    case _ => ???
   }
 
 

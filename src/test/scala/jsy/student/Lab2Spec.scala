@@ -291,7 +291,11 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
 
   "chained &&" should "return correct answer" in {
     val e1 = N(1.0)
-    assert(N(1.0) === eval(Binary(And,Binary(And,N(1.0),N(1.0)),N(1.0))))
+    assert(e1 === eval(Binary(And,Binary(And,e1,e1),e1)))
+  }
+
+  "subtract numbers from boolean" should "return number" in {
+    assert(N(-7) === eval(Binary(Minus,Binary(Minus,B(false),N(3.0)),N(4.0)))) // false  - 3 -4
   }
 }
 
