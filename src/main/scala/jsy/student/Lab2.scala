@@ -117,28 +117,28 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       /* Binary Comparisons */
 
       // return first to eval to false or if both are true return the first expr
-      case Binary(And, e1, e2) => if(!toBoolean(e1)) e1 else if (toBoolean(e1) && toBoolean(e2)) e1 else e2
+      case Binary(And, e1, e2) => if(!toBoolean(eval(env,e1))) e1 else if (toBoolean(eval(env,e1)) && toBoolean(eval(env,e2))) e1 else e2
 
       // return the first to eval to true, if both false return the 2nd expr
-      case Binary(Or, e1, e2) => if(toBoolean(e1)) e1 else e2
+      case Binary(Or, e1, e2) => if(toBoolean(eval(env,e1))) e1 else e2
 
       case Binary(Eq, S(s1), S(s2)) => B(s1 == s2)
-      case Binary(Eq, e1, e2) => B(if(toNumber(e1) == toNumber(e2)) true else false)
+      case Binary(Eq, e1, e2) => B(if(toNumber(eval(env,e1)) == toNumber(eval(env,e2))) true else false)
 
       case Binary(Ne, S(s1), S(s2)) => B(s1 != s2)
-      case Binary(Ne, e1, e2) => B(if(toNumber(e1) != toNumber(e2)) true else false) // return the opposite of Eq
+      case Binary(Ne, e1, e2) => B(if(toNumber(eval(env, e1)) != toNumber(eval(env, e2))) true else false) // return the opposite of Eq
 
       case Binary(Lt, S(s1), S(s2)) => B(s1 < s2)
-      case Binary(Lt, e1, e2) => B(if(toNumber(e1) < toNumber(e2)) true else false)
+      case Binary(Lt, e1, e2) => B(if(toNumber(eval(env,e1)) < toNumber(eval(env,e2))) true else false)
 
       case Binary(Le, S(s1), S(s2)) => B(s1 <= s2)
-      case Binary(Le, e1, e2) => B(if(toNumber(e1) <= toNumber(e2)) true else false)
+      case Binary(Le, e1, e2) => B(if(toNumber(eval(env,e1)) <= toNumber(eval(env,e2))) true else false)
 
       case Binary(Gt, S(s1), S(s2)) => B(s1 > s2)
-      case Binary(Gt, e1, e2) => B(if(toNumber(e1) > toNumber(e2)) true else false)
+      case Binary(Gt, e1, e2) => B(if(toNumber(eval(env,e1)) > toNumber(eval(env,e2))) true else false)
 
       case Binary(Ge, S(s1), S(s2)) => B(s1 >= s2)
-      case Binary(Ge, e1, e2) => B(if(toNumber(e1) >= toNumber(e2)) true else false)
+      case Binary(Ge, e1, e2) => B(if(toNumber(eval(env,e1)) >= toNumber(eval(env,e2))) true else false)
 
       /* Sequence Op */
       case Binary(Seq, e1, e2) => eval(env, e1); eval(env, e2) // evaluate e1, return eval(env,e2)
@@ -148,8 +148,8 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case If(e1, e2, e3) => if(toBoolean(eval(env,e1))) eval(env, e2) else eval(env, e3) // if e1 evals to true eval e2 else eval e3
 
       /* Unary */
-      case Unary(Neg, e1) => N(-toNumber(e1))
-      case Unary(Not, e1) => B(!toBoolean(e1))
+      case Unary(Neg, e1) => N(-toNumber(eval(env,e1)))
+      case Unary(Not, e1) => B(!toBoolean(eval(env,e1)))
 
       /* Var */
       case Var(x) => lookup(env, x) // returns looked up variable
