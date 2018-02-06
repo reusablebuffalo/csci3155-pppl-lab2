@@ -87,7 +87,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     (v: @unchecked) match {
       case S(s) => s
       case Undefined => "undefined"
-      case N(n) => "%f".format(n)
+      case N(n) => if (n.isWhole()) "%d".format(n.toInt) else "%s".format(n)
       case B(b) => if(b) "true" else "false" // true or false
     }
   }
@@ -104,12 +104,14 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
 
       /* Binary */
         // Arithmetic Ops
-      case Binary(Plus, N(n1), N(n2)) => N(n1+n2)
-      case Binary(Plus, S(s1), S(s2)) => S(s1+s2)
-      case Binary(Plus, Var(x), N(n)) => eval(env, Binary(Plus, eval(env, Var(x)), eval(env, N(n))))
-      case Binary(Minus, N(n1), N(n2)) => N(n1-n2)
-      case Binary(Div, N(n1), N(n2)) => N(n1/n2)
-      case Binary(Times, N(n1), N(n2)) => N(n1*n2)
+      //case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
+      case Binary(Plus, S(s1), e2 ) => S(s1 + toStr(eval(env, e2 )))
+      case Binary(Plus, e1, S(s2) ) => S(toStr(eval(env, e1 )) + S(s2))
+      case Binary(Plus, e1, e2) => N(toNumber(eval(env, e1))+toNumber(eval(env, e2))) // eval expression then convert to number
+
+      case Binary(Minus, e1, e2) => N(toNumber(eval(env, e1))-toNumber(eval(env, e2)))
+      case Binary(Div, e1, e2) => N(toNumber(eval(env, e1))/toNumber(eval(env, e2)))
+      case Binary(Times, e1, e2) => N(toNumber(eval(env, e1))*toNumber(eval(env, e2)))
 
         // Binary Logic Ops
       // return first to eval to false or if both are true return the first expr

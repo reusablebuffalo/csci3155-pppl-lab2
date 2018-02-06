@@ -263,6 +263,18 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(B(false) === eval(Binary(Gt, e1, e2)))
   }
 
+  "adding things to strings" should "return expected results" in {
+    val e1 = S("ab")
+    val e2 = S("cd")
+    val e3 = N(3)
+    val e4 = B(true)
+    val e5 = N(3.2)
+    assert(S("abcd") === eval(Binary(Plus, e1, e2)))
+    assert(S("ab3") === eval(Binary(Plus, e1, e3)))
+    assert(S("abtrue") === eval(Binary(Plus, e1, e4)))
+    assert(S("ab3.2") === eval(Binary(Plus, e1, e5)))
+  }
+
 }
 
 // An adapter class to pass in your Lab2 object.
