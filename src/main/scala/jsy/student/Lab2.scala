@@ -99,11 +99,12 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case S(s) => S(s)
       case B(b) => B(b)
       case Undefined => Undefined
+
       /* Inductive Cases */
       case Print(e1) => println(pretty(eval(env, e1))); Undefined
 
       /* Binary */
-        // Arithmetic Ops
+      /* Binary Arithmetic */
       //case Binary(Plus, S(s1), S(s2)) => S(s1+s2) // special case of adding strings
       case Binary(Plus, S(s1), e2 ) => S(s1 + toStr(eval(env, e2 )))
       case Binary(Plus, e1, S(s2) ) => S(toStr(eval(env, e1 )) + S(s2))
@@ -113,7 +114,8 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case Binary(Div, e1, e2) => N(toNumber(eval(env, e1))/toNumber(eval(env, e2)))
       case Binary(Times, e1, e2) => N(toNumber(eval(env, e1))*toNumber(eval(env, e2)))
 
-        // Binary Logic Ops
+      /* Binary Comparisons */
+
       // return first to eval to false or if both are true return the first expr
       case Binary(And, e1, e2) => if(!toBoolean(e1)) e1 else if (toBoolean(e1) && toBoolean(e2)) e1 else e2
 
@@ -137,6 +139,9 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
 
       case Binary(Ge, S(s1), S(s2)) => B(s1 >= s2)
       case Binary(Ge, e1, e2) => B(if(toNumber(e1) >= toNumber(e2)) true else false)
+
+      /* Sequence Op */
+      case Binary(Seq, e1, e2) => eval(env, e1); eval(env, e2) // evaluate e1, return eval(env,e2)
 
       /* Unary */
       case Unary(Neg, e1) => N(-toNumber(e1))
