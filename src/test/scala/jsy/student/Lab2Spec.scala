@@ -288,6 +288,11 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     val e2 = N(1)
     assert(N(2) === eval(Binary(Or, e1, e2))) // should evaluate each sub-expression
   }
+
+  "chained &&" should "return correct answer" in {
+    val e1 = N(1.0)
+    assert(N(1.0) === eval(Binary(And,Binary(And,N(1.0),N(1.0)),N(1.0))))
+  }
 }
 
 // An adapter class to pass in your Lab2 object.

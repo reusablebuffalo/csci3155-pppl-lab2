@@ -125,8 +125,9 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       /* Binary Comparisons */
 
       // return first to eval to false or if both are true return the first expr
-      case Binary(And, e1, e2) => if(!toBoolean(eval(env,e1))) eval(env,e1) else if (toBoolean(eval(env,e1)) && toBoolean(eval(env,e2))) eval(env,e1) else eval(env,e2)
-
+      case Binary(And, e1, e2) => if(!isValue(e1)) eval(env, Binary(And, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(And, e1, eval(env, e2))) else {
+          if(!toBoolean(e1)) e1 else e2
+      }
       // return the first to eval to true, if both false return the 2nd expr
       case Binary(Or, e1, e2) => if(toBoolean(eval(env,e1))) eval(env,e1) else eval(env,e2)
 
