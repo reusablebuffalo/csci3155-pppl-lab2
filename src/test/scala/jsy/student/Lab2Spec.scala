@@ -282,6 +282,12 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
   "undefined" should "equal undefined" in {
     assert(B(true) === eval(Binary(Eq, Undefined, Undefined)))
   }
+
+  "or with non-value expressions" should "return value over expr" in {
+    val e1 = Binary(Plus, N(1),N(1))
+    val e2 = N(1)
+    assert(N(2) === eval(Binary(Or, e1, e2))) // should evaluate each sub-expression
+  }
 }
 
 // An adapter class to pass in your Lab2 object.

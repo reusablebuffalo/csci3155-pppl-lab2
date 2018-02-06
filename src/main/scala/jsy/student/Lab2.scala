@@ -125,17 +125,17 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       /* Binary Comparisons */
 
       // return first to eval to false or if both are true return the first expr
-      case Binary(And, e1, e2) => if(!toBoolean(eval(env,e1))) e1 else if (toBoolean(eval(env,e1)) && toBoolean(eval(env,e2))) e1 else e2
+      case Binary(And, e1, e2) => if(!toBoolean(eval(env,e1))) eval(env,e1) else if (toBoolean(eval(env,e1)) && toBoolean(eval(env,e2))) eval(env,e1) else eval(env,e2)
 
       // return the first to eval to true, if both false return the 2nd expr
-      case Binary(Or, e1, e2) => if(toBoolean(eval(env,e1))) e1 else e2
+      case Binary(Or, e1, e2) => if(toBoolean(eval(env,e1))) eval(env,e1) else eval(env,e2)
 
-      case Binary(Eq, S(s1), S(s2)) => B(s1 == s2)
-      case Binary(Eq, Undefined, Undefined) => B(true)
+      case Binary(Eq, S(s1), S(s2)) => B(s1 == s2) // special case
+      case Binary(Eq, Undefined, Undefined) => B(true) // special case
       case Binary(Eq, e1, e2) => B(if(toNumber(eval(env,e1)) == toNumber(eval(env,e2))) true else false)
 
-      case Binary(Ne, S(s1), S(s2)) => B(s1 != s2)
-      case Binary(Ne, Undefined, Undefined) => B(false)
+      case Binary(Ne, S(s1), S(s2)) => B(s1 != s2) // special case
+      case Binary(Ne, Undefined, Undefined) => B(false) // special case
       case Binary(Ne, e1, e2) => B(if(toNumber(eval(env, e1)) != toNumber(eval(env, e2))) true else false) // return the opposite of Eq
 
       case Binary(Lt, S(s1), S(s2)) => B(s1 < s2)
