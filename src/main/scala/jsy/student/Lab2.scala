@@ -79,7 +79,6 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case N(_) => true
       case S(s) => if (s == "") false else true
       case Undefined => false
-
     }
   }
 

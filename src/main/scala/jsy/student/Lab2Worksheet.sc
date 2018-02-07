@@ -37,5 +37,9 @@ eval("\"\" + true + 1")
 1.0/0.0
 eval("5 && false")
 //eval(Binary(Lt, S("ab"), N(Double.NaN)))
-eval("undefined + undefined")
+eval("(undefined < 1)*10")
 eval("-0 && 0")
+false == false
+eval("console.log(3) + console.log(31)")
+eval("1, 2, \"1,1\"")
+eval("true + 1 + \"hi\"")
