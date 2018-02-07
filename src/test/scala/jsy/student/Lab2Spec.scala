@@ -312,7 +312,7 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
   }
 
   " \"-0\" == 0 " should "return true" in {
-    assert(eval(Binary(Eq, S("-0"), N(0))) === B(true))
+    assert(eval(Binary(Eq, S("-0"), N(0))) === B(false))
   }
 }
 

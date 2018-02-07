@@ -95,7 +95,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
   def eval(env: Env, e: Expr): Expr = e match {
     /* Base Cases */
     case N(n) => N(n)
-    case S(s) => S(s)
+    case S(s) => S(s.toString)
     case B(b) => B(b)
     case Undefined => Undefined
 
@@ -124,9 +124,9 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
         // return the first to eval to true, if both false return the 2nd expr
         case Or => if(toBoolean(e1)) e1 else e2
         case Eq => (e1,e2) match {
-          case (S(s1), S(s2)) => B(s1 == s2)
+          //case (S(s1), S(s2)) => B(s1 == s2)
           case (Undefined, Undefined) => B(true)
-          case (expr1,expr2) => B(if(toNumber(expr1) == toNumber(expr2)) true else false)
+          case (expr1,expr2) => B(if(expr1 == expr2) true else false)
         }
         case Ne => (e1,e2) match {
           case (S(s1), S(s2)) => B(s1 != s2)

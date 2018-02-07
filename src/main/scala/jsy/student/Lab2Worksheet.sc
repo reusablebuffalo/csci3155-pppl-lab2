@@ -52,6 +52,24 @@ eval("\"\"?1:2")
 eval("1 && 2 * 2 || 1")
 eval("\"9\" - 9")
 eval("\"\" - 9")
+eval("undefined === undefined")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
