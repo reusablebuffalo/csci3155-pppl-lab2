@@ -297,6 +297,18 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
   "subtract numbers from boolean" should "return number" in {
     assert(N(-7) === eval(Binary(Minus,Binary(Minus,B(false),N(3.0)),N(4.0)))) // false  - 3 -4
   }
+
+  "divide by 0" should "return infinity" in {
+    val e1 = N(100.0/0.0)
+    assert(eval(e1) === N(Double.PositiveInfinity))
+  }
+
+  "compare string and NaN" should "return false" in {}
+    assert(eval(Binary(Lt, S("ab"), N(Double.NaN))) === B(false))
+
+  "-0.0" should "be false-y" in {
+    assert(B(toBoolean(N(-0.0))) === B(false))
+  }
 }
 
 // An adapter class to pass in your Lab2 object.

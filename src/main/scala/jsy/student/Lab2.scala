@@ -64,7 +64,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     (v: @unchecked) match {
       case N(n) => if(n.isNaN) Double.NaN else n
       case B(b) => if(b) 1 else 0
-      case S(s) => if(s == "") 0 else toNumber(N(s.toDouble))
+      case S(s) => if(s == "") 0 else {try {s.toDouble} catch { case e: java.lang.NumberFormatException => Double.NaN}}
       case Undefined => Double.NaN
     }
   }
@@ -73,7 +73,8 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     require(isValue(v))
     (v: @unchecked) match {
       case B(b) => b
-      case N(0) => false
+      case N(0.0) => false
+      case N(-0.0) => false
       case N(Double.NaN) => false
       case N(_) => true
       case S(s) => if (s == "") false else true
@@ -87,7 +88,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     (v: @unchecked) match {
       case S(s) => s
       case Undefined => "undefined"
-      case N(n) => if (n.isWhole()) "%d".format(n.toInt) else "%s".format(n)
+      case N(n) => if (n.isWhole) "%d".format(n.toInt) else "%s".format(n)
       case B(b) => if(b) "true" else "false" // true or false
     }
   }
@@ -106,7 +107,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     case Binary(bop, e1, e2) => if(!isValue(e1)) eval(env, Binary(bop, eval(env, e1), e2))
       else if (!isValue(e2)) eval(env, Binary(bop, e1, eval(env, e2)))
       else bop match {
-        
+
         /* Binary Arithmetic Ops */
         case Plus => (e1,e2) match {
           case (S(s1), S(s2)) => S(s1 + s2)

@@ -29,3 +29,13 @@ val negFourAST = parse("-4")
 eval("!!0")
 
 parse("false - 3 -4")
+toStr(N(Double.NaN))
+//toStr(N(100/0))
+
+toStr(N(1.0/0.0))
+eval("\"\" + true + 1")
+1.0/0.0
+eval("5 && false")
+//eval(Binary(Lt, S("ab"), N(Double.NaN)))
+eval("undefined + undefined")
+eval("-0 && 0")
