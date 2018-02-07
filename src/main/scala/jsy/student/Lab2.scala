@@ -103,11 +103,11 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     case Print(e1) => println(pretty(eval(env, e1))); Undefined
 
     /* Binary */
-    /* Binary Arithmetic */
-
     case Binary(bop, e1, e2) => if(!isValue(e1)) eval(env, Binary(bop, eval(env, e1), e2))
       else if (!isValue(e2)) eval(env, Binary(bop, e1, eval(env, e2)))
       else bop match {
+        
+        /* Binary Arithmetic Ops */
         case Plus => (e1,e2) match {
           case (S(s1), S(s2)) => S(s1 + s2)
           case (S(s1), expr2) => S(s1 + toStr(expr2))
@@ -117,7 +117,11 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
         case Minus => N(toNumber(e1)-toNumber(e2))
         case Div => N(toNumber(e1)/toNumber(e2))
         case Times => N(toNumber(e1)*toNumber(e2))
+
+        /* Binary Comparison Ops */
+        // return first to eval to false or if both are true return the first expr
         case And => if(!toBoolean(e1)) e1 else e2
+        // return the first to eval to true, if both false return the 2nd expr
         case Or => if(toBoolean(e1)) e1 else e2
         case Eq => (e1,e2) match {
           case (S(s1), S(s2)) => B(s1 == s2)
@@ -145,47 +149,11 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
           case (S(s1), S(s2)) => B(s1 >= s2)
           case (expr1, expr2) => B(if(toNumber(expr1) >= toNumber(expr2)) true else false)
         }
+
+        /* Sequence Op */
         case Seq => e2
     }
-
-    //case Binary(Minus, e1, e2) => N(toNumber(eval(env, e1))-toNumber(eval(env, e2)))
-    //case Binary(Div, e1, e2) => N(toNumber(eval(env, e1))/toNumber(eval(env, e2)))
-    //case Binary(Times, e1, e2) => N(toNumber(eval(env, e1))*toNumber(eval(env, e2)))
-
-    /* Binary Comparisons */
-
-    // return first to eval to false or if both are true return the first expr
-    //case Binary(And, e1, e2) => if(!isValue(e1)) eval(env, Binary(And, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(And, e1, eval(env, e2))) else {
-      //  if(!toBoolean(e1)) e1 else e2
-    //}
-    // return the first to eval to true, if both false return the 2nd expr
-    //case Binary(Or, e1, e2) => if(toBoolean(eval(env, e1))) eval(env, e1) else eval(env, e2)
-
-    //case Binary(Eq, S(s1), S(s2)) => B(s1 == s2) // special case
-    //case Binary(Eq, Undefined, Undefined) => B(true) // special case
-    //case Binary(Eq, e1, e2) => B(if(toNumber(eval(env,e1)) == toNumber(eval(env,e2))) true else false)
-
-    //case Binary(Ne, S(s1), S(s2)) => B(s1 != s2) // special case
-    //case Binary(Ne, Undefined, Undefined) => B(false) // special case
-    //case Binary(Ne, e1, e2) => B(if(toNumber(eval(env, e1)) != toNumber(eval(env, e2))) true else false) // return the opposite of Eq
-
-    //case Binary(Lt, S(s1), S(s2)) => B(s1 < s2)
-    //case Binary(Lt, e1, e2) => B(if(toNumber(eval(env,e1)) < toNumber(eval(env,e2))) true else false)
-
-    //case Binary(Le, S(s1), S(s2)) => B(s1 <= s2)
-    //case Binary(Le, e1, e2) => B(if(toNumber(eval(env,e1)) <= toNumber(eval(env,e2))) true else false)
-
-    //case Binary(Gt, S(s1), S(s2)) => B(s1 > s2)
-    //case Binary(Gt, e1, e2) => B(if(toNumber(eval(env,e1)) > toNumber(eval(env,e2))) true else false)
-
-    //case Binary(Ge, S(s1), S(s2)) => B(s1 >= s2)
-    //case Binary(Ge, e1, e2) => B(if(toNumber(eval(env,e1)) >= toNumber(eval(env,e2))) true else false)
-
-    /* Sequence Op */
-    //case Binary(Seq, e1, e2) => eval(env, e1); eval(env, e2) // evaluate e1, return eval(env,e2)
-
     /* Ternary Op*/
-      // If
     case If(e1, e2, e3) => if(!isValue(e1)) eval(env, If(eval(env,e1),e2,e3))
       else if(!isValue(e2)) eval(env, If(e1, eval(env,e2), e3))
       else if (!isValue(e3)) eval(env, If(e1, e2, eval(env, e3)))
