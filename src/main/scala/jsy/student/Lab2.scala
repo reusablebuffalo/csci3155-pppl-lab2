@@ -105,7 +105,8 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     /* Binary */
     /* Binary Arithmetic */
 
-    case Binary(bop, e1, e2) => if(!isValue(e1)) eval(env, Binary(bop, eval(env, e1), e2)) else if (!isValue(e2)) eval(env, Binary(bop, e1, eval(env, e2)))
+    case Binary(bop, e1, e2) => if(!isValue(e1)) eval(env, Binary(bop, eval(env, e1), e2))
+      else if (!isValue(e2)) eval(env, Binary(bop, e1, eval(env, e2)))
       else bop match {
         case Plus => (e1,e2) match {
           case (S(s1), S(s2)) => S(s1 + s2)
@@ -201,7 +202,8 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     case Var(x) => try {lookup(env, x)} catch { case e:java.util.NoSuchElementException => Undefined}// returns looked up variable
 
     /* ConstDecl */
-    case ConstDecl(x, e1, e2) => eval(extend(env , x, eval(e1)), e2)
+    case ConstDecl(x, e1, e2) => if(!isValue(e1)) eval(env, ConstDecl(x, eval(env, e1), e2))
+      else eval(extend(env , x, e1), e2)
 
     case _ => ???
   }
