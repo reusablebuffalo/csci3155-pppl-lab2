@@ -43,3 +43,25 @@ false == false
 eval("console.log(3) + console.log(31)")
 eval("1, 2, \"1,1\"")
 eval("true + 1 + \"hi\"")
+eval("-11230 + \"hs\"")
+eval("\"aaa\" < \"bb\"")
+eval("\"asdf\" && true")
+eval("\"\" && true")
+eval("3 / \"asd\"")
+eval("\"\"?1:2")
+eval("1 && 2 * 2 || 1")
+eval("\"9\" - 9")
+eval("\"\" - 9")
+
+
+
+
+
+
+
+
+
+
+
+
+
