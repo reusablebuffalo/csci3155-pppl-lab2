@@ -250,7 +250,7 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(eval(Binary(Eq, e1, e1)) === B(false))
   }
 
-  "Ne" should "return true for NaN !== NaN and for undefined !== NaN" in {
+  "Ne" should "return true for NaN !== NaN and for undefined !== NaN and true for false !== 0" in {
     val e1 = N(Double.NaN)
     val e2 = Undefined
     assert(B(true) === eval(Binary(Ne, e1, e1)))

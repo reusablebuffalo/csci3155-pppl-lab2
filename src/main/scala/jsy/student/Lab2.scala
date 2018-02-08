@@ -164,7 +164,11 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     /* Unary */
     case Unary(uop, e1) => if(!isValue(e1)) eval(env, Unary(uop, eval(env, e1)))
       else uop match{
-        case Neg => N(0 -toNumber(e1))
+        case Neg => e1 match {
+          case N(0.0) => N(-0.0)
+          case B(false) => N(-0.0)
+          case _ => N(-toNumber(e1))
+        }
         case Not => B(!toBoolean(e1))
       }
 
