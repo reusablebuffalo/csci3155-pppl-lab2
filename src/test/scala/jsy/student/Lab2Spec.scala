@@ -243,17 +243,19 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
   }
 
   // CUSTOM TEST CASES
-  "Eq" should "return false for NaN == undefined" in {
+  "Eq" should "return false for NaN === undefined" in {
     val e1 = N(Double.NaN)
     val e2 = Undefined
     assert(B(false) === eval(Binary(Eq, e1, e2)))
+    assert(eval(Binary(Eq, e1, e1)) === B(false))
   }
 
-  "Ne" should "return true for NaN != NaN and for undefined != NaN" in {
+  "Ne" should "return true for NaN !== NaN and for undefined !== NaN" in {
     val e1 = N(Double.NaN)
     val e2 = Undefined
     assert(B(true) === eval(Binary(Ne, e1, e1)))
-    assert(B(true) === eval(Binary(Ne, e1, e2)))
+    assert(B(false) === eval(Binary(Ne, e2, e2)))
+    assert(eval(Binary(Ne,B(false),N(0.0))) === B(true))
   }
 
   "Comparisons" should "be able to compare strings" in {
@@ -311,7 +313,7 @@ class Lab2Spec(lab2: Lab2Like) extends FlatSpec {
     assert(B(toBoolean(N(-0.0))) === B(false))
   }
 
-  " \"-0\" == 0 " should "return true" in {
+  " \"-0\" == 0 " should "return false" in {
     assert(eval(Binary(Eq, S("-0"), N(0))) === B(false))
   }
 }

@@ -123,15 +123,17 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
         case And => if(!toBoolean(e1)) e1 else e2
         // return the first to eval to true, if both false return the 2nd expr
         case Or => if(toBoolean(e1)) e1 else e2
-        case Eq => (e1,e2) match {
+        case Eq => (eval(env,e1),eval(env,e2)) match {
           //case (S(s1), S(s2)) => B(s1 == s2)
           case (Undefined, Undefined) => B(true)
           case (expr1,expr2) => B(if(expr1 == expr2) true else false)
         }
-        case Ne => (e1,e2) match {
-          case (S(s1), S(s2)) => B(s1 != s2)
-          case (Undefined, Undefined) => B(false)
-          case (expr1,expr2) => B(if(toNumber(expr1) != toNumber(expr2)) true else false)
+        case Ne => (eval(env,e1),eval(env,e2)) match {
+          //case (S(s1), S(s2)) => B(s1 != s2)
+          //case (Undefined, Undefined) => B(false)
+          case (N(Double.NaN), _) => B(true)
+          case (_, N(Double.NaN)) => B(true)
+          case (expr1,expr2) => B(if(expr1 != expr2) true else false)
         }
         case Lt => (e1,e2) match {
           case (S(s1), S(s2)) => B(s1 < s2)
