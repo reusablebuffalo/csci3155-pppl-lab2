@@ -75,8 +75,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       case B(b) => b
       case N(0.0) => false
       case N(-0.0) => false
-      case N(Double.NaN) => false
-      case N(_) => true
+      case N(n) => if (n.isNaN) false else true
       case S(s) => if (s == "") false else true
       case Undefined => false
     }
@@ -87,7 +86,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     (v: @unchecked) match {
       case S(s) => s
       case Undefined => "undefined"
-      case N(n) => if (n.isWhole) "%d".format(n.toInt) else "%s".format(n)
+      case N(n) => if (n.isNaN) "NaN" else if (n.isWhole) "%d".format(n.toInt) else "%s".format(n)
       case B(b) => if(b) "true" else "false" // true or false
     }
   }
@@ -125,14 +124,12 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
         case Or => if(toBoolean(e1)) e1 else e2
         case Eq => (eval(env,e1),eval(env,e2)) match {
           //case (S(s1), S(s2)) => B(s1 == s2)
-          case (Undefined, Undefined) => B(true)
+          //case (Undefined, Undefined) => B(true)
           case (expr1,expr2) => B(if(expr1 == expr2) true else false)
         }
         case Ne => (eval(env,e1),eval(env,e2)) match {
           //case (S(s1), S(s2)) => B(s1 != s2)
           //case (Undefined, Undefined) => B(false)
-          case (N(Double.NaN), _) => B(true)
-          case (_, N(Double.NaN)) => B(true)
           case (expr1,expr2) => B(if(expr1 != expr2) true else false)
         }
         case Lt => (e1,e2) match {
@@ -166,7 +163,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       else uop match{
         case Neg => e1 match {
           case N(0.0) => N(-0.0)
-          case B(false) => N(-0.0)
+          //case B(false) => N(-0.0)
           case _ => N(-toNumber(e1))
         }
         case Not => B(!toBoolean(e1))
