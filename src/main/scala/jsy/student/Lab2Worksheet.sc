@@ -52,11 +52,13 @@ eval("\"\"?1:2")
 eval("1 && 2 * 2 || 1")
 eval("\"9\" - 9")
 eval("\"\" - 9")
-eval("-false")
+eval("false !== 0")
 eval("-\"\"")
 eval("0/0 + \"asf\"")
+eval("!(0/0)")
 eval(N(-0.0))
 N(Double.NaN) != N(Double.NaN)
+eval("NaN")
 
 
 

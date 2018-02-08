@@ -163,7 +163,6 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
       else uop match{
         case Neg => e1 match {
           case N(0.0) => N(-0.0)
-          //case B(false) => N(-0.0)
           case _ => N(-toNumber(e1))
         }
         case Not => B(!toBoolean(e1))
