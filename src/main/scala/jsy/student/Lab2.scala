@@ -150,7 +150,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
         }
 
         /* Sequence Op */
-        case Seq => e2
+        case Seq => eval(env, e1);e2
     }
     /* Ternary Op*/
     case If(e1, e2, e3) => if(!isValue(e1)) eval(env, If(eval(env,e1),e2,e3))
@@ -175,7 +175,7 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
     case ConstDecl(x, e1, e2) => if(!isValue(e1)) eval(env, ConstDecl(x, eval(env, e1), e2))
       else eval(extend(env , x, e1), e2)
 
-    case _ => ???
+    case _ => e
   }
 
 

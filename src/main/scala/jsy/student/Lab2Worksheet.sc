@@ -58,7 +58,14 @@ eval("0/0 + \"asf\"")
 eval("!(0/0)")
 eval(N(-0.0))
 N(Double.NaN) != N(Double.NaN)
-eval("NaN")
+eval("1 + \"0/0\"")
+eval("undefined < 1")
+
+
+
+
+
+
 
 
 
