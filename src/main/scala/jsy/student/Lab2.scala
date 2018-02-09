@@ -9,9 +9,10 @@ object Lab2 extends jsy.util.JsyApplication with Lab2Like {
 
   /*
    * CSCI 3155: Lab 2
+   *
    * Ian Smith
    * 
-   * Partner: Vy
+   * Partner: Vy Le
    * Collaborators: <Any Collaborators>
    */
 
