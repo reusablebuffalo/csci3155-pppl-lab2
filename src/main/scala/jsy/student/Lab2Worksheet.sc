@@ -63,11 +63,11 @@ eval("undefined < 1")
 eval("false?console.log(2):1")
 eval("console.log(0/0)")
 eval("console.log(console.log(1))")
-
-
-
-
-
+eval("1 === 1 === 1")
+eval("!console.log(1) || 1")
+eval("\"an\" >= \"aa\"")
+eval("\"0\" <= false")
+eval("2*-0")
 
 
 
