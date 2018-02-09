@@ -60,6 +60,10 @@ eval(N(-0.0))
 N(Double.NaN) != N(Double.NaN)
 eval("1 + \"0/0\"")
 eval("undefined < 1")
+eval("false?console.log(2):1")
+eval("console.log(0/0)")
+eval("console.log(console.log(1))")
+
 
 
 
