@@ -68,8 +68,7 @@ eval("!console.log(1) || 1")
 eval("\"an\" >= \"aa\"")
 eval("\"0\" <= false")
 eval("2*-0")
-
-
+eval("console.log(3) && console.log(4)")
 
 
 
